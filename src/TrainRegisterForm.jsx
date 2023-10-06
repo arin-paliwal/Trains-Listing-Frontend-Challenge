@@ -30,18 +30,39 @@ const TrainRegisterForm = () => {
       "Content-Type": "application/json",
     };
 
-    const response = await axios.post(
-      "http://20.244.56.144/train/register",
-      formData,
-      { headers }
-    );
+    try {
+      const response = await axios.post(
+        "http://20.244.56.144/train/register",
+        formData,
+        { headers }
+      );
 
-    setResponse(response);
-    // console.log("Response Status:", response.status);
-    // console.log("Response Data:", response.data);
-    console.log(response);
+      const responseDataToStore = {
+        companyName: response.data.companyName,
+        clientId: response.data.clientId,
+        clientSecret: response.data.clientSecret,
+        ownerName: response.data.ownerName,
+        ownerEmail: response.data.ownerEmail,
+        rollNo: response.data.rollNo,
+      };
 
+      // Save the specific response data to Local Storage
+      localStorage.setItem(
+        "registerResponse",
+        JSON.stringify(responseDataToStore)
+      );
+      localStorage.setItem(
+        "registerRequest",
+        JSON.stringify(formData)
+      );
+
+      setResponse(response.data);
+    } catch (error) {
+      // Handle error here
+      console.error(error);
+    }
   };
+
 
   return (
     <div className="train-register-form">
