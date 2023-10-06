@@ -36,20 +36,10 @@ const TrainRegisterForm = () => {
         formData,
         { headers }
       );
-
-      const responseDataToStore = {
-        companyName: response.data.companyName,
-        clientId: response.data.clientId,
-        clientSecret: response.data.clientSecret,
-        ownerName: response.data.ownerName,
-        ownerEmail: response.data.ownerEmail,
-        rollNo: response.data.rollNo,
-      };
-
-      // Save the specific response data to Local Storage
+      
       localStorage.setItem(
         "registerResponse",
-        JSON.stringify(responseDataToStore)
+        JSON.stringify(response)
       );
       localStorage.setItem(
         "registerRequest",
@@ -61,9 +51,6 @@ const TrainRegisterForm = () => {
       // Handle error here
       console.error(error);
     }
-    console.log('====================================');
-    console.log(response);
-    console.log('====================================');
   };
 
 
