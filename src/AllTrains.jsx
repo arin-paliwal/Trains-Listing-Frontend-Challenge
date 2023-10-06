@@ -15,7 +15,7 @@ const AllTrains = () => {
       rollNo: object1.rollNo,
       clientID: object2.data.clientID,
       clientSecret: object2.data.clientSecret,
-      ownerMail:object1.ownerEmail
+      ownerEmail:object1.ownerEmail
     };
     console.log(requestData);
 
