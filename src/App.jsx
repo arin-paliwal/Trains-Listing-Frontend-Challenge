@@ -3,6 +3,7 @@ import "./App.css";
 import axios from "axios";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TrainRegisterForm from "./TrainRegisterForm";
+import AllTrains from "./AllTrains";
 
 function App() {
   // const [trains, setTrains] = useState([]);
@@ -32,6 +33,7 @@ function App() {
       </ul> */}
       <Routes>
         <Route path="/" element={<TrainRegisterForm/>}/>
+        <Route path="/getAllTrains" element={<AllTrains/>}/>
       </Routes>
     </BrowserRouter>
   );

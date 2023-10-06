@@ -56,11 +56,14 @@ const TrainRegisterForm = () => {
         JSON.stringify(formData)
       );
 
-      setResponse(response.data);
+      setResponse(response);
     } catch (error) {
       // Handle error here
       console.error(error);
     }
+    console.log('====================================');
+    console.log(response);
+    console.log('====================================');
   };
 
 
@@ -110,12 +113,15 @@ const TrainRegisterForm = () => {
         <button type="submit">Register</button>
       </form>
 
-      {response && (
+      {/* {response && (
         <div className="response">
           <h2>Response:</h2>
           <pre>{JSON.stringify(response.data, null, 2)}</pre>
         </div>
-      )}
+      )} */}
+      <a href="/getAllTrains">
+        <button>Next</button>
+      </a>
     </div>
   );
 };
