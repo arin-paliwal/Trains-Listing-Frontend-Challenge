@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 const AllTrains = () => {
-  const [responseData, setResponseData] = useState(null);
+  const [responseData, setResponseData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [access, setAccess] = useState(""); // Moved setAccess outside of the fetch block
+  const [access, setAccess] = useState("");
   const object1String = localStorage.getItem("registerRequest");
   const object2String = localStorage.getItem("registerResponse");
   const object1 = JSON.parse(object1String);
@@ -28,18 +28,16 @@ const AllTrains = () => {
       .then((response) => response.json())
       .then((data) => {
         localStorage.setItem("serverResponse", JSON.stringify(data));
-        setAccess(data.access_token); // Moved setAccess here after data is received
-        setResponseData(data);
+        setAccess(data.access_token);
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
-  }, []); // Removed the if statement and fetch block from here
+  }, []);
 
   useEffect(() => {
-    // Moved the fetch block here
     if (access) {
       fetch("http://20.244.56.144:80/train/trains", {
         method: "GET",
@@ -49,7 +47,6 @@ const AllTrains = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           setResponseData(data);
         })
         .catch((error) => {
@@ -59,15 +56,79 @@ const AllTrains = () => {
   }, [access]);
 
   return (
-    <div>
-      <h1>AllTrains</h1>
+    <div className="p-6">
+      <div className="flex justify-center">
+        <h1 className="text-4xl py-12 font-semibold mb-4">
+          All Trains shows up here!
+        </h1>
+      </div>
       {loading ? (
         <div>Loading...</div>
-      ) : responseData ? (
-        <div>
-          <h2>Server Response</h2>
-          <pre>{JSON.stringify(responseData, null, 2)}</pre>
-          <h1>{responseData.access_token}</h1>
+      ) : responseData.length ? (
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border-collapse">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 bg-gray-100 border-b border-gray-300">
+                  Train Name
+                </th>
+                <th className="px-6 py-3 bg-gray-100 border-b border-gray-300">
+                  Train Number
+                </th>
+                <th className="px-6 py-3 bg-gray-100 border-b border-gray-300">
+                  Departure Time
+                </th>
+                <th className="px-6 py-3 bg-gray-100 border-b border-gray-300">
+                  Seats Available (Sleeper)
+                </th>
+                <th className="px-6 py-3 bg-gray-100 border-b border-gray-300">
+                  Seats Available (AC)
+                </th>
+                <th className="px-6 py-3 bg-gray-100 border-b border-gray-300">
+                  Price (Sleeper)
+                </th>
+                <th className="px-6 py-3 bg-gray-100 border-b border-gray-300">
+                  Price (AC)
+                </th>
+                <th className="px-6 py-3 bg-gray-100 border-b border-gray-300">
+                  Delayed By
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {responseData.map((train, index) => (
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+                >
+                  <td className="px-6 py-4 border-b border-gray-300">
+                    {train.trainName}
+                  </td>
+                  <td className="px-6 py-4 border-b border-gray-300">
+                    {train.trainNumber}
+                  </td>
+                  <td className="px-6 py-4 border-b border-gray-300">
+                    {train.departureTime.Hours}:{train.departureTime.Minutes}
+                  </td>
+                  <td className="px-6 py-4 border-b border-gray-300">
+                    {train.seatsAvailable.sleeper}
+                  </td>
+                  <td className="px-6 py-4 border-b border-gray-300">
+                    {train.seatsAvailable.AC}
+                  </td>
+                  <td className="px-6 py-4 border-b border-gray-300">
+                    {train.price.sleeper}
+                  </td>
+                  <td className="px-6 py-4 border-b border-gray-300">
+                    {train.price.AC}
+                  </td>
+                  <td className="px-6 py-4 border-b border-gray-300">
+                    {train.delayedBy}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <div>No data available</div>
