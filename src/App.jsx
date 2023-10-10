@@ -4,6 +4,7 @@ import axios from "axios";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TrainRegisterForm from "./TrainRegisterForm";
 import AllTrains from "./AllTrains";
+import TrainDetails from "./TrainDetails";
 
 function App() {
   // const [trains, setTrains] = useState([]);
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         <Route path="/" element={<TrainRegisterForm/>}/>
         <Route path="/getAllTrains" element={<AllTrains/>}/>
+        <Route path="/trainDetails" element={<TrainDetails/>}/>
       </Routes>
     </BrowserRouter>
   );

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./TrainRegisterForm.css";
+import { useNavigate } from "react-router-dom";
 
 const TrainRegisterForm = () => {
+  const navigate=useNavigate();
   const [formData, setFormData] = useState({
     companyName: "",
     ownerName: "",
@@ -51,6 +53,7 @@ const TrainRegisterForm = () => {
       // Handle error here
       console.error(error);
     }
+    navigate("/getAllTrains");
   };
 
 
