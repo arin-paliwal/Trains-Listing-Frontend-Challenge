@@ -10,7 +10,7 @@ const TrainRegisterForm = () => {
     ownerName: "",
     rollNo: "",
     ownerEmail: "",
-    accessCode: "",
+    accessCode: import.meta.env.ACCESS_CODE,
   });
 
   const [response, setResponse] = useState(null);

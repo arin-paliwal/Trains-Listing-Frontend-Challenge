@@ -35,7 +35,7 @@ function App() {
       <Routes>
         <Route path="/" element={<TrainRegisterForm/>}/>
         <Route path="/getAllTrains" element={<AllTrains/>}/>
-        <Route path="/trainDetails" element={<TrainDetails/>}/>
+        <Route path="/trainDetails/:trainNumber" element={<TrainDetails/>}/>
       </Routes>
     </BrowserRouter>
   );

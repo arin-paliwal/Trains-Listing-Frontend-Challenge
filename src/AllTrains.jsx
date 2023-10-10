@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMyContext } from "./context/ContextProvider";
 
 const AllTrains = () => {
+  const {specificTrainData,setSpecificTrainData}=useMyContext()
   const navigate=useNavigate()
   const [responseData, setResponseData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [access, setAccess] = useState("");
   const [trainNumber, setTrainNumber] = useState("")
-  const [specificTrainData, setSpecificTrainData] = useState("")
   const object1String = localStorage.getItem("registerRequest");
   const object2String = localStorage.getItem("registerResponse");
   const object1 = JSON.parse(object1String);
@@ -40,7 +41,6 @@ const AllTrains = () => {
         setLoading(false);
       });
   }, []);
-
   useEffect(() => {
     if (access) {
       fetch("http://20.244.56.144:80/train/trains", {
@@ -52,29 +52,32 @@ const AllTrains = () => {
         .then((response) => response.json())
         .then((data) => {
           setResponseData(data);
+          
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
     }
   }, [access]);
-  useEffect(() => {
-    fetch(`http://20.244.56.144:80/train/trains/${trainNumber}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${access}`,
-      },
-    })
-    .then((response)=>response.json())
-    .then((data)=>{
-      setSpecificTrainData(data)
-      console.log(specificTrainData);
-    })
-    .catch((error)=>{
-      console.log("Error",error);
-    })
-    ;
-  },[trainNumber]);
+  const handleItemClick=async(trainNumber)=>{
+      localStorage.setItem("TrainNumber", trainNumber);
+      await fetch(`http://20.244.56.144:80/train/trains/${trainNumber}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setSpecificTrainData(data);
+          console.log(specificTrainData);
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+        navigate(`/trainDetails/${trainNumber}`)
+  }
+  
 
 
   return (
@@ -126,8 +129,8 @@ const AllTrains = () => {
                   }`}
                 >
                   <td
-                    className="px-6 py-4 border-b border-gray-300"
-                    onClick={()=>setTrainNumber(train.trainNumber)}
+                    className="px-6 py-4 border-b hover:bg-[#d5d5d5] border-gray-300"
+                    onClick={()=>handleItemClick(train.trainNumber)}
                   >
                     {train.trainName}
                   </td>
