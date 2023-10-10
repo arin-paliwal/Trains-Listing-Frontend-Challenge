@@ -2,8 +2,26 @@ import { useEffect, useState } from "react";
 import { useMyContext } from "./context/ContextProvider";
 
 const TrainDetails = () => {
-  const { specificTrainData } = useMyContext();
+  const [specificTrainData,setSpecificTrainData ] = useState();
+  const access=localStorage.getItem("access")
+  const trainNumber = localStorage.getItem("TrainNumber");
   const [loading, setLoading] = useState(true);
+  useEffect(()=>{
+    fetch(`http://20.244.56.144:80/train/trains/${trainNumber}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setSpecificTrainData(data);
+          console.log(specificTrainData);
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+  },[])
    useEffect(() => {
      setTimeout(() => {
        setLoading(false);
@@ -11,6 +29,7 @@ const TrainDetails = () => {
    }, []);
   useEffect(() => {
     console.log(specificTrainData);
+    localStorage.removeItem("access")
   }, [specificTrainData]);
 
   return (
@@ -58,6 +77,7 @@ const TrainDetails = () => {
               <p>{specificTrainData.delayedBy} minutes</p>
             </div>
           </div>
+        
         </>
       )}
     </div>

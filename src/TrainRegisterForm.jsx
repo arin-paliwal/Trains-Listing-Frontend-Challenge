@@ -77,7 +77,7 @@ const TrainRegisterForm = () => {
         />
 
         <input
-          type="number"
+          type="text"
           name="rollNo"
           placeholder="Roll No."
           value={formData.rollNo}

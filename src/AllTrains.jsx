@@ -34,6 +34,7 @@ const AllTrains = () => {
       .then((data) => {
         localStorage.setItem("serverResponse", JSON.stringify(data));
         setAccess(data.access_token);
+        
         setLoading(false);
       })
       .catch((error) => {
@@ -59,23 +60,10 @@ const AllTrains = () => {
         });
     }
   }, [access]);
-  const handleItemClick=async(trainNumber)=>{
+  const handleItemClick=(trainNumber)=>{
       localStorage.setItem("TrainNumber", trainNumber);
-      await fetch(`http://20.244.56.144:80/train/trains/${trainNumber}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setSpecificTrainData(data);
-          console.log(specificTrainData);
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
-        navigate(`/trainDetails/${trainNumber}`)
+      localStorage.setItem("access", access)
+      navigate(`/trainDetails/${trainNumber}`)
   }
   
 
